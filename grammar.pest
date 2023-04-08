@@ -1,0 +1,24 @@
+/// Implicit white spaces are ok.
+WHITESPACE = _{ " " }
+
+/// Set of characters permited 
+char = { ASCII_ALPHANUMERIC | "." | "_" | "/" | "-"  }
+
+name = { char+ }
+
+// value can be zero or more char, plus = and : for path variables.
+value = { (char | "=" | ":" )* }
+
+/// section is a name, enclosed by square brackets.
+section = { "[" ~ name ~ "]" }
+
+/// property pair is a name and value, separated by an equal sign.
+property = { name ~ "=" ~ value }
+
+/// A Systemd unit file structure
+file = {
+    SOI ~
+    ((section | property)? ~ NEWLINE)* ~
+    EOI
+}
+
